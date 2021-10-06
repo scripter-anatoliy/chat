@@ -1,0 +1,15 @@
+.wrapperComment {
+    margin-left: 25px;
+    margin-top: 16px;
+}
+
+.commentAuthor {
+    color: #555;
+    margin: 0 0 2px 0;
+    font-size: 9pt;
+}
+
+.commentText {
+    color: #333;
+    font-size: 10pt;
+}
