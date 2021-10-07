@@ -33,6 +33,7 @@ export function Comment({comment, toggle, setToggle, commentAdd}: CommentPropsTy
             {toggle !== comment.id
                 ?
                 <Button onClick={() => setToggle?.(comment.id)}
+                        color={"primary"}
                         variant="contained"
                         endIcon={<Reply/>}
                         size={"small"}
@@ -41,8 +42,8 @@ export function Comment({comment, toggle, setToggle, commentAdd}: CommentPropsTy
                 </Button>
                 :
                 <Button onClick={() => setToggle?.(null)}
+                        color={"secondary"}
                         variant="contained"
-                        endIcon={<Reply/>}
                         size={"small"}
                 >
                     cancel
