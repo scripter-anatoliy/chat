@@ -86,7 +86,7 @@ function App() {
             id: comments.length + 1,
             parentId: parent && parent.id,
             text,
-            author: "Anatoliy",
+            author: "Анатолий",
             children: [],
         };
         if (parent)
