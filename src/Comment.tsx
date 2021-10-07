@@ -2,61 +2,68 @@ import React from "react";
 import c from "./Comment.module.css"
 import PostMessage from "./PostMessage";
 import {CommentsType} from "./App";
+import {Button, Grid, Paper} from "@material-ui/core";
+import {Reply} from "@material-ui/icons";
 
 export type CommentPropsType = {
     comment: CommentsType
-    commentAdd: (parent: any, text: string, author: string) => void
+    commentAdd: (parent: CommentsType | null, text: string) => void
     toggle: null | number
-    setToggle: (toggle: null | number)=>void
-
+    setToggle: (toggle: null | number) => void
 }
 
 export function Comment({comment, toggle, setToggle, commentAdd}: CommentPropsType) {
 
-
-    const nestedComments = (comment.children || []).map((comment: any) => {
-        return <Comment key={comment.id}
-                        commentAdd={commentAdd}
-                        comment={comment} toggle={toggle}
-                        setToggle={setToggle}
-                        // type="child"
-        />
+    const nestedComments = (comment.children || []).map((comment: CommentsType) => {
+        return (
+            <Comment key={comment.id}
+                     commentAdd={commentAdd}
+                     comment={comment} toggle={toggle}
+                     setToggle={setToggle}
+            />
+        )
     })
 
     return (
-        <div className={c.wrapperComment} >
+        <div className={c.wrapperComment}>
             <div className={c.commentAuthor}>
                 {comment.author}
             </div>
             <div className={c.commentText}>{comment.text}</div>
-            <button onClick={() => {
-                console.log(comment)
-                setToggle?.(comment.id)
-            }}>+</button>
-            {toggle === comment.id &&
-                <PostMessage parent={comment} commentAdd={(...args) => {
-                    commentAdd(...args)
-                    setToggle(null)
-                }
-                } />
-            // <div>
-            //     <input />
-            //     <textarea></textarea>
-            //     <button onClick={()=>{
-            //         comment.children.push({
-            //             id: 8,
-            //             parentId: comment.id,
-            //             text: 'agreed, solid content here for sure!',
-            //             author: 'jeff',
-            //             children: [],
-            //         })
-            //         setToggle(null)
-            //     }}>+</button>
-            // </div>
+            {toggle !== comment.id
+                ?
+                <Button onClick={() => setToggle?.(comment.id)}
+                        variant="contained"
+                        endIcon={<Reply/>}
+                        size={"small"}
+                >
+                    reply
+                </Button>
+                :
+                <Button onClick={() => setToggle?.(null)}
+                        variant="contained"
+                        endIcon={<Reply/>}
+                        size={"small"}
+                >
+                    cancel
+                </Button>
             }
-
-            {nestedComments}
-
+            <Grid item>
+                {toggle === comment.id &&
+                <PostMessage parent={comment}
+                             commentAdd={(...args) => {
+                                 commentAdd(...args)
+                                 setToggle(null)
+                             }
+                             }
+                />
+                }
+                <div className={c.commentText}>
+                    <Paper elevation={2} style={{paddingRight: '20px'}}>
+                        {nestedComments}
+                    </Paper>
+                </div>
+            </Grid>
         </div>
     )
 }

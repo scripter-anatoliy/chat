@@ -1,6 +1,7 @@
-import React, {ChangeEvent, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Comment} from "./Comment";
 import PostMessage from "./PostMessage";
+import {Box, Container, Grid, LinearProgress, Paper} from "@material-ui/core";
 
 export type CommentsType = {
     id: number,
@@ -14,61 +15,59 @@ let comments: CommentsType[] = [
     {
         id: 1,
         parentId: null,
-        text: 'Love this article!',
-        author: 'john',
+        text: 'Всем привет! Как дела?',
+        author: 'Антон',
         children: null,
     },
     {
         id: 3,
         parentId: 1,
-        text: 'Agreed! this article is great',
-        author: 'kevin',
+        text: 'Привет! нормально, сам как?',
+        author: 'Евгений',
         children: null,
     },
     {
         id: 2,
         parentId: 1,
-        text: 'What r u talking about this article is terrible...',
-        author: 'james',
+        text: 'Хай! Норм, только дел много...',
+        author: 'Сергей',
         children: null,
     },
     {
         id: 5,
         parentId: null,
-        text: 'Sweet article! Nice job always high quality.',
-        author: 'steve',
+        text: 'Как тестовое? все в порядке?',
+        author: 'Владимир',
         children: null,
     },
     {
         id: 4,
         parentId: 2,
-        text: 'come on, its a good article and u know it',
-        author: 'sarah',
+        text: 'Какие дела? отдыхать тоже надо)',
+        author: 'Надежда',
         children: null,
     },
     {
         id: 6,
         parentId: 5,
-        text: 'agreed, solid content here for sure!',
-        author: 'jeff',
+        text: 'Да, нормально! ',
+        author: 'Александр',
         children: null,
     },
 ]
 
 function createTree(list: CommentsType[]) {
-    console.log(list)
     const map: { [key: string]: number } = {},
         roots = []
 
     for (let i = 0; i < list.length; i += 1) {
-        map[list[i].id] = i // initialize the map
-        list[i].children = [] // initialize the children
+        map[list[i].id] = i // инициализировать map
+        list[i].children = [] // инициализировать children
     }
 
     for (let i = 0; i < list.length; i += 1) {
         const node = list[i]
         if (node.parentId) {
-            // if you have dangling branches check that map[node.parentId] exists
             list[map[node.parentId]].children!.push(node)
         } else {
             roots.push(node)
@@ -77,25 +76,21 @@ function createTree(list: CommentsType[]) {
     return roots
 }
 
-
 function App() {
     const [toggle, setToggle] = useState<null | number>(null)
     const [commentTree, setCommentTree] = useState<null | CommentsType[]>(null)
-
     const [, rerender] = useState(false)
 
-
-    const commentAdd = (parent: any, text: string, author: string) => {
-        console.log(parent)
+    const commentAdd = (parent: CommentsType | null, text: string) => {
         const newComment = {
             id: comments.length + 1,
             parentId: parent && parent.id,
             text,
-            author,
+            author: "Anatoliy",
             children: [],
         };
         if (parent)
-            parent.children.push(newComment)
+            parent.children!.push(newComment)
         else {
             commentTree && setCommentTree([...commentTree, newComment])
         }
@@ -110,19 +105,35 @@ function App() {
     }, [])
 
     return (
-        <div style={{fontFamily: 'sans-serif'}}>
-            {toggle === null &&
-            <PostMessage commentAdd={(...args) => {
-                commentAdd(...args)
-                rerender(ps => !ps)
-            }} parent={null}/>
-            }
-            {!commentTree && "spinner"}
-            {commentTree?.map((comment) => {
-                return <Comment commentAdd={commentAdd} key={comment.id} comment={comment} toggle={toggle}
-                                setToggle={setToggle}/>
-            })}
-        </div>
+        <Container>
+            <Grid container>
+                {toggle === null &&
+                <PostMessage commentAdd={(...args) => {
+                    commentAdd(...args)
+                    rerender(ps => !ps)
+                }} parent={null}/>
+                }
+            </Grid>
+            <Grid container style={{padding: "20px"}} spacing={2}>
+                {!commentTree &&
+                <Box sx={{ width: '100%' }}>
+                    <LinearProgress />
+                </Box>
+                }
+                {commentTree?.map((comment) => {
+                    return <Grid item style={{flex: "1 1 25%"}}>
+                        <Paper elevation={3}
+                               style={{padding: "20px", maxHeight: "500px", overflowY: "auto",}}>
+                            <Comment commentAdd={commentAdd}
+                                     key={comment.id}
+                                     comment={comment}
+                                     toggle={toggle}
+                                     setToggle={setToggle}/>
+                        </Paper>
+                    </Grid>
+                })}
+            </Grid>
+        </Container>
     )
 }
 
