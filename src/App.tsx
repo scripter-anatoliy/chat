@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import {Comment} from "./Comment";
-import PostMessage from "./PostMessage";
-import {Box, Container, Grid, LinearProgress, Paper} from "@material-ui/core";
+import {Comment} from './Comment';
+import PostMessage from './PostMessage';
+import {Box, Container, Grid, LinearProgress, Paper} from '@material-ui/core';
 
 export type CommentsType = {
     id: number,
@@ -86,7 +86,7 @@ function App() {
             id: comments.length + 1,
             parentId: parent && parent.id,
             text,
-            author: "Анатолий",
+            author: 'Анатолий',
             children: [],
         };
         if (parent)
@@ -95,11 +95,11 @@ function App() {
             commentTree && setCommentTree([...commentTree, newComment])
         }
         comments.push({...newComment, children: null})
-        localStorage["comments"] = JSON.stringify(comments)
+        localStorage['comments'] = JSON.stringify(comments)
     }
 
     useEffect(() => {
-        let localStorageElement = localStorage["comments"];
+        let localStorageElement = localStorage['comments'];
         comments = localStorageElement ? JSON.parse(localStorageElement) : comments
         setCommentTree(createTree([...comments]))
     }, [])
@@ -114,16 +114,16 @@ function App() {
                 }} parent={null}/>
                 }
             </Grid>
-            <Grid container style={{padding: "20px"}} spacing={2}>
+            <Grid container style={{padding: '20px'}} spacing={2}>
                 {!commentTree &&
                 <Box sx={{ width: '100%' }}>
                     <LinearProgress />
                 </Box>
                 }
                 {commentTree?.map((comment) => {
-                    return <Grid item style={{flex: "1 1 25%"}}>
+                    return <Grid item style={{flex: '1 1 25%'}}>
                         <Paper elevation={3}
-                               style={{padding: "20px", maxHeight: "500px", overflowY: "auto",}}>
+                               style={{padding: '20px', maxHeight: '500px', overflowY: 'auto',}}>
                             <Comment commentAdd={commentAdd}
                                      key={comment.id}
                                      comment={comment}

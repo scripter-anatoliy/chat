@@ -1,7 +1,7 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import {CommentsType} from "./App";
-import {Button, TextField} from "@material-ui/core";
-import {Send} from "@material-ui/icons";
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {CommentsType} from './App';
+import {Button, TextField} from '@material-ui/core';
+import {Send} from '@material-ui/icons';
 
 export type PostMessageType = {
     parent: CommentsType | null
@@ -27,7 +27,7 @@ function PostMessage({parent, commentAdd}: PostMessageType) {
     }
     const onKeyEnter = (e: KeyboardEvent<HTMLInputElement>) => {
         setError('')
-        if (e.code === "Enter" && !e.shiftKey) {
+        if (e.code === 'Enter' && !e.shiftKey) {
             setText('')
             e.preventDefault()
             callbackCommentAdd()
@@ -35,10 +35,10 @@ function PostMessage({parent, commentAdd}: PostMessageType) {
     }
 
     return (
-        <div style={{padding: "10px"}}>
+        <div style={{padding: '10px'}}>
             <TextField
-                id="outlined-textarea"
-                label="Next message..."
+                id='outlined-textarea'
+                label='Next message...'
                 multiline
                 value={text}
                 autoFocus
@@ -47,11 +47,11 @@ function PostMessage({parent, commentAdd}: PostMessageType) {
                 error={!!error}
                 helperText={error}
             />
-            <Button color={"success"}
-                    variant="contained"
+            <Button color={'success'}
+                    variant='contained'
                     onClick={callbackCommentAdd}
                     endIcon={<Send/>}
-                    size={"small"}
+                    size={'small'}
             >
                 Text
             </Button>

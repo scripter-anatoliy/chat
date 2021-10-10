@@ -1,9 +1,9 @@
-import React from "react";
-import c from "./Comment.module.css"
-import PostMessage from "./PostMessage";
-import {CommentsType} from "./App";
-import {Button, Grid, Paper} from "@material-ui/core";
-import {Reply} from "@material-ui/icons";
+import React from 'react';
+import c from './Comment.module.css'
+import PostMessage from './PostMessage';
+import {CommentsType} from './App';
+import {Button, Grid, Paper} from '@material-ui/core';
+import {Reply} from '@material-ui/icons';
 
 export type CommentPropsType = {
     comment: CommentsType
@@ -33,18 +33,18 @@ export function Comment({comment, toggle, setToggle, commentAdd}: CommentPropsTy
             {toggle !== comment.id
                 ?
                 <Button onClick={() => setToggle?.(comment.id)}
-                        color={"primary"}
-                        variant="contained"
+                        color={'primary'}
+                        variant='contained'
                         endIcon={<Reply/>}
-                        size={"small"}
+                        size={'small'}
                 >
                     reply
                 </Button>
                 :
                 <Button onClick={() => setToggle?.(null)}
-                        color={"secondary"}
-                        variant="contained"
-                        size={"small"}
+                        color={'secondary'}
+                        variant='contained'
+                        size={'small'}
                 >
                     cancel
                 </Button>
